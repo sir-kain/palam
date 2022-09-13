@@ -21,9 +21,13 @@ class Region
     #[ORM\OneToMany(mappedBy: 'region', targetEntity: Departement::class)]
     private Collection $departements;
 
+    #[ORM\OneToMany(mappedBy: 'region', targetEntity: Responsable::class)]
+    private Collection $responsables;
+
     public function __construct()
     {
         $this->departements = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class Region
             // set the owning side to null (unless already changed)
             if ($departement->getRegion() === $this) {
                 $departement->setRegion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Responsable>
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables->add($responsable);
+            $responsable->setRegion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getRegion() === $this) {
+                $responsable->setRegion(null);
             }
         }
 

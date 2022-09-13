@@ -25,9 +25,13 @@ class Departement
     #[ORM\OneToMany(mappedBy: 'departement', targetEntity: Commune::class)]
     private Collection $communes;
 
+    #[ORM\OneToMany(mappedBy: 'departement', targetEntity: Responsable::class)]
+    private Collection $responsables;
+
     public function __construct()
     {
         $this->communes = new ArrayCollection();
+        $this->responsables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +87,36 @@ class Departement
             // set the owning side to null (unless already changed)
             if ($commune->getDepartement() === $this) {
                 $commune->setDepartement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Responsable>
+     */
+    public function getResponsables(): Collection
+    {
+        return $this->responsables;
+    }
+
+    public function addResponsable(Responsable $responsable): self
+    {
+        if (!$this->responsables->contains($responsable)) {
+            $this->responsables->add($responsable);
+            $responsable->setDepartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponsable(Responsable $responsable): self
+    {
+        if ($this->responsables->removeElement($responsable)) {
+            // set the owning side to null (unless already changed)
+            if ($responsable->getDepartement() === $this) {
+                $responsable->setDepartement(null);
             }
         }
 
