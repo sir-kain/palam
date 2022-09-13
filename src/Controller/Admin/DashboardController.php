@@ -2,9 +2,19 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Activite;
+use App\Entity\Commune;
+use App\Entity\Composant;
+use App\Entity\Departement;
+use App\Entity\Indicateur;
+use App\Entity\Periodicite;
+use App\Entity\Region;
+use App\Entity\Responsable;
+use App\Entity\TypeIndicateur;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,12 +23,12 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return parent::index();
+        // return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
+        $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        return $this->redirect($adminUrlGenerator->setController(ActiviteCrudController::class)->generateUrl());
 
         // Option 2. You can make your dashboard redirect to different pages depending on the user
         //
@@ -40,7 +50,27 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        return [
+            // MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+
+            MenuItem::section('Planification'),
+            MenuItem::linkToCrud('Composants', 'fa fa-tags', Composant::class),
+            MenuItem::linkToCrud('Activités', 'fa fa-tags', Activite::class),
+
+            MenuItem::section('Indicateurs'),
+            MenuItem::linkToCrud('Indicateurs', 'fa fa-tags', Indicateur::class),
+            MenuItem::linkToCrud('Type indicateurs', 'fa fa-file-text', TypeIndicateur::class),
+
+            MenuItem::section('Administration'),
+            // MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', User::class),
+            MenuItem::linkToCrud('Responsables', 'fa fa-comment', Responsable::class),
+            MenuItem::linkToCrud('Periodicités', 'fa fa-comment', Periodicite::class),
+            MenuItem::linkToCrud('Regions', 'fa fa-comment', Region::class),
+            MenuItem::linkToCrud('Departements', 'fa fa-comment', Departement::class),
+            MenuItem::linkToCrud('Communes', 'fa fa-comment', Commune::class),
+        ];
+
     }
 }
