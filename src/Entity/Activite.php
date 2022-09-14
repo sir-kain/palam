@@ -19,10 +19,10 @@ class Activite
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_debut = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_fin = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'activites')]
@@ -41,6 +41,10 @@ class Activite
     public function __construct()
     {
         $this->activites = new ArrayCollection();
+    }
+
+    public function __toString(): string {
+        return $this->libelle;
     }
 
     public function getId(): ?int
@@ -65,7 +69,7 @@ class Activite
         return $this->date_debut;
     }
 
-    public function setDateDebut(\DateTimeInterface $date_debut): self
+    public function setDateDebut(?\DateTimeInterface $date_debut): self
     {
         $this->date_debut = $date_debut;
 
@@ -77,7 +81,7 @@ class Activite
         return $this->date_fin;
     }
 
-    public function setDateFin(\DateTimeInterface $date_fin): self
+    public function setDateFin(?\DateTimeInterface $date_fin): self
     {
         $this->date_fin = $date_fin;
 
