@@ -65,9 +65,9 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section('Administration'),
             // MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', User::class),
-            MenuItem::linkToCrud('Responsables', 'fa fa-comment', Responsable::class),
-            MenuItem::linkToCrud('Periodicités', 'fa fa-comment', Periodicite::class),
-            MenuItem::linkToCrud('Regions', 'fa fa-comment', Region::class),
+            MenuItem::linkToCrud('Responsables', 'fa-regular fa-clipboard', Responsable::class),
+            MenuItem::linkToCrud('Periodicités', 'fa-solid fa-globe', Periodicite::class),
+            MenuItem::linkToCrud('Regions', 'fa-regular fa-address-card', Region::class),
             MenuItem::linkToCrud('Departements', 'fa fa-comment', Departement::class),
             MenuItem::linkToCrud('Communes', 'fa fa-comment', Commune::class),
         ];
