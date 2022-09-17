@@ -76,6 +76,17 @@ class ActiviteRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    /**
+     * @return Activite[] Returns an array of Activite objects
+     */
+    public function findParentActivities(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.parent_id is NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findOldestActivity($parentId): ?Activite
     {
         return $this->findOneBy(['parent_id' => $parentId], ['date_fin' => 'DESC']);

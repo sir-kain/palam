@@ -61,10 +61,10 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section('Indicateurs'),
             MenuItem::linkToCrud('Indicateurs', 'fa fa-tags', Indicateur::class),
-            MenuItem::linkToCrud('Type indicateurs', 'fa fa-file-text', TypeIndicateur::class),
-
+            
             MenuItem::section('Administration'),
             // MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', User::class),
+            MenuItem::linkToCrud('Type indicateurs', 'fa fa-file-text', TypeIndicateur::class),
             MenuItem::linkToCrud('Responsables', 'fa-regular fa-clipboard', Responsable::class),
             MenuItem::linkToCrud('Periodicités', 'fa-solid fa-globe', Periodicite::class),
             MenuItem::linkToCrud('Regions', 'fa-regular fa-address-card', Region::class),
