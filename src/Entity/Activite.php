@@ -38,6 +38,8 @@ class Activite
     #[ORM\Column(length: 255)]
     private ?string $niveau_achevement = null;
 
+    private ?string $days = null;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
@@ -52,10 +54,20 @@ class Activite
         return $this->id;
     }
 
+    public function getDays(): ?string
+    {
+        if ($this->getDateFin() && $this->getDateDebut()) {
+            return date_diff($this->getDateFin(),$this->getDateDebut())->days;
+        }
+
+        return $this->days;
+    }
+
     public function getLibelle(): ?string
     {
         return $this->libelle;
     }
+
 
     public function setLibelle(string $libelle): self
     {

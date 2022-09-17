@@ -39,28 +39,49 @@ class ActiviteRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Activite[] Returns an array of Activite objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getDays(): ?string
+    {
+        if ($this->getParentId()) {
+            if ($this->getDateFin() && $this->getDateDebut()) {
+                return date_diff($this->getDateFin(), $this->getDateDebut())->days;
+            }
+        } else {
+        }
 
-//    public function findOneBySomeField($value): ?Activite
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->days;
+    }
+
+    //    /**
+    //     * @return Activite[] Returns an array of Activite objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Activite
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findOldestActivity($parentId): ?Activite
+    {
+        return $this->findOneBy(['parent_id' => $parentId], ['date_fin' => 'DESC']);
+    }
+    public function findEarliestActivity($parentId): ?Activite
+    {
+        return $this->findOneBy(['parent_id' => $parentId], ['date_debut' => 'ASC']);
+    }
 }

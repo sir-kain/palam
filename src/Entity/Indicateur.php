@@ -24,14 +24,14 @@ class Indicateur
     #[ORM\JoinColumn(nullable: false)]
     private ?Periodicite $periodicite = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $source = null;
 
     #[ORM\ManyToOne(inversedBy: 'indicateurs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeIndicateur $type_indicateur = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $analyse_interpretation = null;
 
     public function getId(): ?int
