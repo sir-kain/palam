@@ -40,6 +40,10 @@ class Activite
 
     private ?string $days = null;
 
+    #[ORM\ManyToOne(inversedBy: 'activites')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Composant $composant = null;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
@@ -162,6 +166,18 @@ class Activite
     public function setNiveauAchevement(string $niveau_achevement): self
     {
         $this->niveau_achevement = $niveau_achevement;
+
+        return $this;
+    }
+
+    public function getComposant(): ?Composant
+    {
+        return $this->composant;
+    }
+
+    public function setComposant(?Composant $composant): self
+    {
+        $this->composant = $composant;
 
         return $this;
     }

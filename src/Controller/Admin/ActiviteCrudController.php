@@ -35,8 +35,9 @@ class ActiviteCrudController extends AbstractCrudController
             TextField::new('days', 'Durée')->onlyOnIndex(),
             DateField::new('date_debut', 'Date debut'),
             DateField::new('date_fin', 'Date fin'),
-            AssociationField::new('parent_id', 'Activité parente')->onlyOnForms(),
-            AssociationField::new('responsable', 'Responsables'),
+            AssociationField::new('parent_id', 'Activité parente'),
+            AssociationField::new('responsable', 'Responsable'),
+            AssociationField::new('composant', 'Composant')->hideOnIndex(),
             TextField::new('niveau_achevement', '% Achevement'),
         ];
     }
@@ -45,7 +46,7 @@ class ActiviteCrudController extends AbstractCrudController
     // {
     //     $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
 
-    //     dd($queryBuilder->createIndexQueryBuilder());
+    //     // dd($queryBuilder->createIndexQueryBuilder());
     //     // // if user defined sort is not set
     //     // if (0 === count($searchDto->getSort())) {
     //     //     $queryBuilder
@@ -53,6 +54,6 @@ class ActiviteCrudController extends AbstractCrudController
     //     //         ->addOrderBy('full_name', 'DESC');
     //     // }
 
-    //     return $queryBuilder->dq('entity.parent_id');
+    //     return $queryBuilder->groupBy('entity.id');
     // }
 }
