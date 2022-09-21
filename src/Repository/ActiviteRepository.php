@@ -96,6 +96,17 @@ class ActiviteRepository extends ServiceEntityRepository
         return $this->findOneBy(['parent_id' => $parentId], ['date_debut' => 'ASC']);
     }
 
+    public function avgAchevment($parentId)
+    {
+        $activiteChildren = $this->findBy(['parent_id' => $parentId]);
+        $activiteChildrenAchevment = array_map(function ($activite) {
+            assert($activite instanceof Activite);
+            return $activite->getNiveauAchevement();
+        }, (array) $activiteChildren);
+
+        return round(array_sum($activiteChildrenAchevment) / count($activiteChildrenAchevment));
+    }
+
     public function getOrderedList()
     {
         $list = [];

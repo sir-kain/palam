@@ -54,12 +54,14 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         if ($activityParent) {
             $oldestActivity = $this->activiteRepository->findOldestActivity($activityParent);
             $activityParent->setDateFin($oldestActivity->getDateFin());
-            $this->manager->persist($activityParent);
 
             $earliestActivity = $this->activiteRepository->findEarliestActivity($activityParent);
             $activityParent->setDateDebut($earliestActivity->getDateDebut());
+            
+            $avgAchevment = $this->activiteRepository->avgAchevment($activityParent);
+            $activityParent->setNiveauAchevement($avgAchevment);
+            
             $this->manager->persist($activityParent);
-
             $this->manager->flush();
         }
     }

@@ -18,6 +18,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ActiviteCrudController extends AbstractCrudController
@@ -43,7 +45,7 @@ class ActiviteCrudController extends AbstractCrudController
             DateField::new('date_fin', 'Date fin'),
             AssociationField::new('responsable', 'Responsable'),
             AssociationField::new('composant', 'Composant')->hideOnIndex(),
-            TextField::new('niveau_achevement', '% Achevement'),
+            IntegerField::new('niveau_achevement', '% Achevement'),
         ];
     }
 

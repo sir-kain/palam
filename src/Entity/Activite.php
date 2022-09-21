@@ -35,8 +35,8 @@ class Activite
     #[ORM\JoinColumn(nullable: false)]
     private ?Responsable $responsable = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $niveau_achevement = null;
+    #[ORM\Column(length: 100)]
+    private ?int $niveau_achevement = null;
 
     private ?string $days = null;
 
@@ -158,12 +158,12 @@ class Activite
         return $this;
     }
 
-    public function getNiveauAchevement(): ?string
+    public function getNiveauAchevement(): ?int
     {
         return $this->niveau_achevement;
     }
 
-    public function setNiveauAchevement(string $niveau_achevement): self
+    public function setNiveauAchevement(int $niveau_achevement): self
     {
         $this->niveau_achevement = $niveau_achevement;
 
