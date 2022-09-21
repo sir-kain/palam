@@ -63,9 +63,9 @@ class ActiviteCrudController extends AbstractCrudController
         $entityManager = $this->container->get('doctrine')->getRepository($className);
         assert($entityManager instanceof ActiviteRepository);
         $delimiter = ',';
-        $filename = 'activites' . date('d-m-y') . 'csv';
+        $filename = 'activites' . date('d-m-y') . '.csv';
         $f = fopen('php://memory', 'w');
-        $fields = ['Libelle', 'Durée', 'Debut', 'Fin'];
+        $fields = ['Activités', 'Durée', 'Debut', 'Fin'];
         fputcsv($f, $fields, $delimiter);
         foreach ($entityManager->getOrderedList() as $row) {
             $line = [$row['libelle'], $row['days'], $row['debut'], $row['fin']];
