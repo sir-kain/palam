@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ComposantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ComposantRepository::class)]
@@ -21,6 +22,17 @@ class Composant
     #[ORM\OneToMany(mappedBy: 'composant', targetEntity: Activite::class)]
     private Collection $activites;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_debut = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_fin = null;
+
+    private ?string $days = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?int $niveau_achevement = null;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
@@ -34,6 +46,15 @@ class Composant
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDays(): ?string
+    {
+        if ($this->getDateFin() && $this->getDateDebut()) {
+            return date_diff($this->getDateFin(),$this->getDateDebut())->days;
+        }
+
+        return $this->days;
     }
 
     public function getLibelle(): ?string
@@ -74,6 +95,42 @@ class Composant
                 $activite->setComposant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->date_debut;
+    }
+
+    public function setDateDebut(?\DateTimeInterface $date_debut): self
+    {
+        $this->date_debut = $date_debut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->date_fin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $date_fin): self
+    {
+        $this->date_fin = $date_fin;
+
+        return $this;
+    }
+
+    public function getNiveauAchevement(): ?int
+    {
+        return $this->niveau_achevement;
+    }
+
+    public function setNiveauAchevement(?int $niveau_achevement): self
+    {
+        $this->niveau_achevement = $niveau_achevement;
 
         return $this;
     }
