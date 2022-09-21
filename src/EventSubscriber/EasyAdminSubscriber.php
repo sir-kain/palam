@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Activite;
 use App\Repository\ActiviteRepository;
+use App\Repository\ComposantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
@@ -14,8 +15,12 @@ use Symfony\Component\Security\Core\Security;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private Security $security, private ActiviteRepository $activiteRepository, private EntityManagerInterface $manager)
-    {
+    public function __construct(
+        private Security $security,
+        private ActiviteRepository $activiteRepository,
+        private ComposantRepository $composantRepository,
+        private EntityManagerInterface $manager
+    ) {
     }
 
     public static function getSubscribedEvents()
@@ -57,11 +62,24 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
             $earliestActivity = $this->activiteRepository->findEarliestActivity($activityParent);
             $activityParent->setDateDebut($earliestActivity->getDateDebut());
-            
+
             $avgAchevment = $this->activiteRepository->avgAchevment($activityParent);
             $activityParent->setNiveauAchevement($avgAchevment);
-            
+
+            // composant
+            $composant = $activityParent->getComposant();
+            $oldestParentActivity = $this->activiteRepository->findOldestParentActivity($composant);
+            $composant->setDateFin($oldestParentActivity->getDateFin());
+
+            $earliestParentActivity = $this->activiteRepository->findEarliestParentActivity($composant);
+            $composant->setDateDebut($earliestParentActivity->getDateDebut());
+
+            $avgAchevment = $this->activiteRepository->avgAchevmentComposant($composant);
+            $composant->setNiveauAchevement($avgAchevment);
+
+
             $this->manager->persist($activityParent);
+            $this->manager->persist($composant);
             $this->manager->flush();
         }
     }

@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Composant;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ComposantCrudController extends AbstractCrudController
@@ -18,9 +20,9 @@ class ComposantCrudController extends AbstractCrudController
         return [
             TextField::new('libelle', 'Libelle'),
             TextField::new('days', 'Durée')->hideOnForm(),
-            TextField::new('date_debut', 'Date debut')->hideOnForm(),
-            TextField::new('date_fin', 'Date fin')->hideOnForm(),
-            TextField::new('niveau_achevement', '% achevement')->hideOnForm(),
+            DateField::new('date_debut', 'Date debut')->hideOnForm(),
+            DateField::new('date_fin', 'Date fin')->hideOnForm(),
+            IntegerField::new('niveau_achevement', '% achevement')->hideOnForm(),
         ];
     }
 }

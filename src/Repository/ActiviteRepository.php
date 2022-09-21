@@ -91,9 +91,20 @@ class ActiviteRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['parent_id' => $parentId], ['date_fin' => 'DESC']);
     }
+
     public function findEarliestActivity($parentId): ?Activite
     {
         return $this->findOneBy(['parent_id' => $parentId], ['date_debut' => 'ASC']);
+    }
+
+    public function findOldestParentActivity($composant): ?Activite
+    {
+        return $this->findOneBy(['composant' => $composant], ['date_fin' => 'DESC']);
+    }
+
+    public function findEarliestParentActivity($composant): ?Activite
+    {
+        return $this->findOneBy(['composant' => $composant], ['date_debut' => 'ASC']);
     }
 
     public function avgAchevment($parentId)
@@ -105,6 +116,18 @@ class ActiviteRepository extends ServiceEntityRepository
         }, (array) $activiteChildren);
 
         return round(array_sum($activiteChildrenAchevment) / count($activiteChildrenAchevment));
+    }
+
+    public function avgAchevmentComposant($composant)
+    {
+
+        $activiteParents = $this->findBy(['parent_id' => null, 'composant' => $composant]);
+        $activiteParentAchevment = array_map(function ($activite) {
+            assert($activite instanceof Activite);
+            return $activite->getNiveauAchevement();
+        }, (array) $activiteParents);
+
+        return round(array_sum($activiteParentAchevment) / count($activiteParentAchevment));
     }
 
     public function getOrderedList()
