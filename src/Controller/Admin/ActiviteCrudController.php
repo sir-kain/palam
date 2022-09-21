@@ -51,7 +51,9 @@ class ActiviteCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $exportCSV = Action::new("exportCSV", 'Export excel')->setIcon('fas fa-download')->linkToCrudAction('downloadCSV');
+        $exportCSV = Action::new("exportCSV", 'Export excel')
+            ->setIcon('fas fa-download')
+            ->linkToCrudAction('downloadCSV');
         return $actions->addBatchAction($exportCSV);
     }
 
