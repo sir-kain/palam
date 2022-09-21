@@ -95,4 +95,33 @@ class ActiviteRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['parent_id' => $parentId], ['date_debut' => 'ASC']);
     }
+
+    public function getOrderedList()
+    {
+        $list = [];
+        foreach ((array) $this->findAll() as $activite) {
+            assert($activite instanceof Activite);
+            if (is_null($activite->getParentId())) {
+                array_push(
+                    $list,
+                    [
+                        'libelle' => $activite->getLibelle(),
+                        'days' => $activite->getDays() . ' Jours',
+                        'debut' => date_format($activite->getDateDebut(), 'd-m-Y'),
+                        'fin' => date_format($activite->getDateFin(), 'd-m-Y')
+                    ]
+                );
+                $activiteChilden = array_map(function ($activiteChild) {
+                    return [
+                        'libelle' => $activiteChild->getLibelle(),
+                        'days' => $activiteChild->getDays() . ' Jours',
+                        'debut' => date_format($activiteChild->getDateDebut(), 'd-m-Y'),
+                        'fin' => date_format($activiteChild->getDateFin(), 'd-m-Y')
+                    ];
+                }, $this->findBy(['parent_id' => $activite->getId()]));
+                array_push($list, ...$activiteChilden);
+            }
+        }
+        return $list;
+    }
 }
