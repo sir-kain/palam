@@ -1,0 +1,39 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var paginator \EasyCorp\Bundle\EasyAdminBundle\Orm\EntityPaginator #}
+{% trans_default_domain 'EasyAdminBundle' %}
+
+	<div class="d-flex justify-content-between mx-0 row"> <div class="col-sm-12 col-md-6">
+		<div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">
+			{% if render_detailed_pagination is defined ? render_detailed_pagination : true %}
+				{{ 'paginator.results'|trans({'%count%': paginator.numResults|format})|raw }}
+			{% endif %}
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-6">
+		<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate">
+			<ul class="pagination justify-content-end">
+				<li class="paginate_button page-item previous {{ not paginator.hasPreviousPage ? 'disabled' }}">
+					<a href="{{ not paginator.hasPreviousPage ? '#' : paginator.generateUrlForPage(paginator.previousPage) }}" data-dt-idx="0" tabindex="0" class="page-link">&nbsp;</a>
+				</li>
+				{% if render_detailed_pagination is defined ? render_detailed_pagination : true %}
+					{% for page in paginator.pageRange %}
+						<li class="paginate_button page-item {{ page == paginator.currentPage ? 'active' }} {{ page is null ? 'disabled' }}">
+							{% if page is null %}
+								<span class="page-link">&hellip;</span>
+							{% else %}
+								<a href="{{ paginator.generateUrlForPage(page) }}" data-dt-idx="1" tabindex="0" class="page-link">{{ page }}</a>
+							{% endif %}
+						</li>
+					{% endfor %}
+				{% else %}
+					<li class="paginate_button page-item active {{ paginator.currentPage is null ? 'disabled' }}">
+						<a href="{{ paginator.generateUrlForPage(paginator.currentPage) }}" data-dt-idx="1" tabindex="0" class="page-link">{{ paginator.currentPage }}</a>
+					</li>
+				{% endif %}
+				<li class="paginate_button page-item next {{ not paginator.hasNextPage ? 'disabled' }}">
+					<a href="{{ not paginator.hasNextPage ? '#' : paginator.generateUrlForPage(paginator.nextPage) }}" data-dt-idx="8" tabindex="0" class="page-link">&nbsp;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
