@@ -37,15 +37,6 @@ class IndicateurCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): ORMQueryBuilder
     {
         $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-
-        // dd($queryBuilder->getDQL());
-        // // // if user defined sort is not set
-        // // if (0 === count($searchDto->getSort())) {
-        // //     $queryBuilder
-        // //         ->addSelect('CONCAT(entity.first_name, \' \', entity.last_name) AS HIDDEN full_name')
-        // //         ->addOrderBy('full_name', 'DESC');
-        // // }
-
-        return $queryBuilder;
+        return $queryBuilder->orderBy('entity.type_indicateur');
     }
 }
