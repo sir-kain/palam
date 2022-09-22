@@ -50,27 +50,35 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        // yield MenuItem::linkToDashboard('Dashboard', 'home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         return [
-            // MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+            // MenuItem::linkToDashboard('Dashboard', 'home'),
 
-            MenuItem::section('Planification'),
-            MenuItem::linkToCrud('Composants', 'fa fa-tags', Composant::class),
-            MenuItem::linkToCrud('Activités', 'fa fa-tags', Activite::class),
+            // MenuItem::section('Planification'),
+            MenuItem::linkToCrud('Composants', 'home', Composant::class),
+            MenuItem::linkToCrud('Activités', 'list', Activite::class),
 
-            MenuItem::section('Indicateurs'),
-            MenuItem::linkToCrud('Indicateurs', 'fa fa-tags', Indicateur::class),
-            
-            MenuItem::section('Administration'),
-            // MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', User::class),
-            MenuItem::linkToCrud('Type indicateurs', 'fa fa-file-text', TypeIndicateur::class),
-            MenuItem::linkToCrud('Responsables', 'fa-regular fa-clipboard', Responsable::class),
-            MenuItem::linkToCrud('Periodicités', 'fa-solid fa-globe', Periodicite::class),
-            MenuItem::linkToCrud('Regions', 'fa-regular fa-address-card', Region::class),
-            MenuItem::linkToCrud('Departements', 'fa fa-comment', Departement::class),
-            MenuItem::linkToCrud('Communes', 'fa fa-comment', Commune::class),
+            // MenuItem::section('Indicateurs'),
+            MenuItem::linkToCrud('Indicateurs', 'shopping-cart', Indicateur::class),
+
+            // MenuItem::section('Administration'),
+            // // MenuItem::linkToCrud('Utilisateurs', 'user', User::class),
+            // MenuItem::linkToCrud('Type indicateurs', 'file-text', TypeIndicateur::class),
+            // MenuItem::linkToCrud('Responsables', 'fa-regular fa-clipboard', Responsable::class),
+            // MenuItem::linkToCrud('Periodicités', 'fa-solid fa-globe', Periodicite::class),
+            // MenuItem::linkToCrud('Regions', 'fa-regular fa-address-card', Region::class),
+            // MenuItem::linkToCrud('Departements', 'comment', Departement::class),
+            // MenuItem::linkToCrud('Communes', 'comment', Commune::class),
+
+            MenuItem::subMenu('Administration', 'map')->setSubItems([
+                MenuItem::linkToCrud('Type indicateurs', 'book', TypeIndicateur::class),
+                MenuItem::linkToCrud('Responsables', 'user', Responsable::class),
+                MenuItem::linkToCrud('Periodicités', 'package', Periodicite::class),
+                MenuItem::linkToCrud('Regions', 'map', Region::class),
+                MenuItem::linkToCrud('Departements', 'map', Departement::class),
+                MenuItem::linkToCrud('Communes', 'list', Commune::class),
+            ]),
         ];
-
     }
 }

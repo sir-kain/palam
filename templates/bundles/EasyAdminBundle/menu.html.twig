@@ -1,0 +1,46 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+<div class="navbar-container main-menu-content" data-menu="menu-container"> {% block main_menu_before %}{% endblock %}
+	<ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
+		{% block main_menu %}
+			{% for menuItem in ea.mainMenu.items %}
+				{% block menu_item %}
+					<li class="dropdown nav-item {{ ea.mainMenu.isSelected(menuItem) ? 'sidebar-group-active active' }}" data-menu="{{ menuItem.hasSubItems ? 'dropdown ' }}">
+						{{ _self.render_menu_item(menuItem) }}
+						{% if menuItem.hasSubItems %}
+							<ul class="dropdown-menu" data-bs-popper="none">
+								{% for menuSubItem in menuItem.subItems %}
+									<li data-menu="">
+										{{ _self.render_menu_item(menuSubItem) }}
+									</li>
+								{% endfor %}
+							</ul>
+
+						{% endif %}
+					</li>
+
+				{% endblock menu_item %}
+			{% endfor %}
+
+		{% endblock main_menu %}
+
+	</ul>
+
+	{% block main_menu_after %}{% endblock %}
+</div>
+{% macro render_menu_item(item) %}
+	{% if item.isMenuSection %}
+		<a class="dropdown-toggle nav-link d-flex align-items-center" href="{{ item.linkUrl }}" data-bs-toggle="dropdown">
+			{% if item.icon is not empty %}
+				<i data-feather="{{ item.icon }}"></i>
+			{% endif %}
+			<span>{{ item.label|trans|raw }}</span>
+		</a>
+	{% else %}
+		<a class="nav-link d-flex align-items-center" href="{{ item.linkUrl }}">
+			{% if item.icon is not empty %}
+				<i data-feather="{{ item.icon }}"></i>
+			{% endif %}
+			<span>{{ item.label|trans|raw }}</span>
+		</a>
+	{% endif %}
+{% endmacro %}
