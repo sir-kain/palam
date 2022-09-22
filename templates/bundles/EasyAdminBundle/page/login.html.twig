@@ -45,11 +45,6 @@ License: You must have a valid license purchased only from themeforest(the above
 		<link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/forms/form-validation.css">
 		<link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/authentication.css">
 		<!-- END: Page CSS-->
-
-		<!-- BEGIN: Custom CSS-->
-	<link
-		rel="stylesheet" type="text/css" href="../../../assets/css/style.css"> <!-- END: Custom CSS-->
-
 	</head>
 	<!-- END: Head-->
 
@@ -120,11 +115,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
 										<input type="hidden" name="{{ target_path_parameter|default('_target_path') }}" value="{{ target_path|default(ea is defined ? path(ea.dashboardRouteName) : '/') }}"/>
 										<div class="mb-1">
-											<label for="usrname" class="form-label">{{ _username_label }}</label>
+											<label for="username" class="form-label">{{ _username_label }}</label>
 											<input type="text" placeholder="admin@admin.com" id="username" name="{{ username_parameter|default('_username') }}" class="form-control" value="{{ last_username|default('') }}" required autofocus autocomplete="username">
 										</div>
 
 										<div class="mb-1">
+											<label for="password" class="form-label">{{ _password_label }}</label>
 											<div class="input-group input-group-merge form-password-toggle">
 												<input type="password" id="password" name="{{ password_parameter|default('_password') }}" class="form-control" required autocomplete="current-password">
 

@@ -81,18 +81,9 @@ class ActiviteCrudController extends AbstractCrudController
     }
 
 
-    // public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    // {
-    //     $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-
-    //     // dd($queryBuilder->createIndexQueryBuilder());
-    //     // // if user defined sort is not set
-    //     // if (0 === count($searchDto->getSort())) {
-    //     //     $queryBuilder
-    //     //         ->addSelect('CONCAT(entity.first_name, \' \', entity.last_name) AS HIDDEN full_name')
-    //     //         ->addOrderBy('full_name', 'DESC');
-    //     // }
-
-    //     return $queryBuilder->groupBy('entity.id');
-    // }
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        return $queryBuilder->orderBy('entity.parent_id');
+    }
 }

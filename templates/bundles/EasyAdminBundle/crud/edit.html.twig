@@ -1,0 +1,98 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends ea.templatePath('layout') %}
+{% form_theme edit_form with ea.crud.formThemes only %}
+
+{% trans_default_domain ea.i18n.translationDomain %}
+
+{% block body_id 'ea-edit-' ~ entity.name ~ '-' ~ entity.primaryKeyValue %}
+{% block body_class 'ea-edit ea-edit-' ~ entity.name %}
+
+{% set ea_field_assets = ea.crud.fieldAssets(constant('EasyCorp\\Bundle\\EasyAdminBundle\\Config\\Crud::PAGE_EDIT')) %}
+
+	{% block head_javascript %}{{ parent() }}<script src="{{ asset('form.js', ea.assets.defaultAssetPackageName) }}"> </script>
+{% endblock head_javascript %}
+
+{% block configured_head_contents %}
+	{{ parent() }}
+	{% for htmlContent in ea_field_assets.headContents %}
+		{{ htmlContent|raw }}
+	{% endfor %}
+{% endblock %}
+
+{% block configured_body_contents %}
+	{{ parent() }}
+	{% for htmlContent in ea_field_assets.bodyContents %}
+		{{ htmlContent|raw }}
+	{% endfor %}
+{% endblock %}
+
+{% block configured_stylesheets %}
+	{{ parent() }}
+	{{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea_field_assets.cssAssets }, with_context = false) }}
+	{{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+
+{% block configured_javascripts %}
+	{{ parent() }}
+	{{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea_field_assets.jsAssets }, with_context = false) }}
+	{{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+
+{% block content_title %}
+	{%- apply spaceless -%}
+	{% set custom_page_title = ea.crud.customPageTitle(pageName, entity ? entity.instance : null, ea.i18n.translationParameters) %}
+	{{ custom_page_title is null
+            ? ea.crud.defaultPageTitle(null, null, ea.i18n.translationParameters)|trans|raw
+            : custom_page_title|trans|raw }}
+	{%- endapply -%}
+{% endblock %}
+
+{% block page_actions %}
+	{% for action in entity.actions %}
+		{{ include(action.templatePath, { action: action }, with_context = false) }}
+	{% endfor %}
+{% endblock %}
+
+{% block main %}
+	<section id="basic-vertical-layouts">
+		<div class="row">
+			<div class="col-md-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						{% block edit_form %}
+							{{ form(edit_form) }}{% endblock edit_form %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{% block delete_form %}
+			{{ include('@EasyAdmin/crud/includes/_delete_form.html.twig', { entity_id: entity.primaryKeyValue }, with_context = false) }}
+		{% endblock delete_form %}
+	{% endblock %}
+
+
+	{% block body_javascript %}
+		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
+		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
+		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
+		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/legacy.js') }}"></script>
+		<script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.min.js') }}"></script>
+		<script src="{{ asset('app-assets/js/scripts/forms/form-select2.min.js') }}"></script>
+	{% endblock %}
+
+	{% block head_stylesheets %}
+		<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-pickadate.min.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.min.css')}}">
+		<style>
+			#ea-lightbox-Suspect_photoFile {
+				display: none;
+			}
+			.ea-lightbox-thumbnail img {
+				width: 250px;
+				height: 250px;
+			}
+		</style>
+	{% endblock %}

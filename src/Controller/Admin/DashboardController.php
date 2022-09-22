@@ -28,7 +28,7 @@ class DashboardController extends AbstractDashboardController
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        return $this->redirect($adminUrlGenerator->setController(ActiviteCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(ComposantCrudController::class)->generateUrl());
 
         // Option 2. You can make your dashboard redirect to different pages depending on the user
         //
@@ -61,15 +61,6 @@ class DashboardController extends AbstractDashboardController
 
             // MenuItem::section('Indicateurs'),
             MenuItem::linkToCrud('Indicateurs', 'shopping-cart', Indicateur::class),
-
-            // MenuItem::section('Administration'),
-            // // MenuItem::linkToCrud('Utilisateurs', 'user', User::class),
-            // MenuItem::linkToCrud('Type indicateurs', 'file-text', TypeIndicateur::class),
-            // MenuItem::linkToCrud('Responsables', 'fa-regular fa-clipboard', Responsable::class),
-            // MenuItem::linkToCrud('Periodicités', 'fa-solid fa-globe', Periodicite::class),
-            // MenuItem::linkToCrud('Regions', 'fa-regular fa-address-card', Region::class),
-            // MenuItem::linkToCrud('Departements', 'comment', Departement::class),
-            // MenuItem::linkToCrud('Communes', 'comment', Commune::class),
 
             MenuItem::subMenu('Administration', 'map')->setSubItems([
                 MenuItem::linkToCrud('Type indicateurs', 'book', TypeIndicateur::class),
