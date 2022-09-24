@@ -49,6 +49,16 @@ class ActiviteCrudController extends AbstractCrudController
         ];
     }
 
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->overrideTemplates([
+                'crud/edit' => 'admin/activite/edit.html.twig',
+                'crud/new' => 'admin/activite/new.html.twig',
+            ]);
+    }
+
     public function configureActions(Actions $actions): Actions
     {
         $exportCSV = Action::new("exportCSV", 'Export excel')
