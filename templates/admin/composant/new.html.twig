@@ -2,7 +2,7 @@
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 {% extends ea.templatePath('layout') %}
 {% form_theme new_form with ea.crud.formThemes only %}
-
+{% set entity_name = entity.fqcn %}
 {% trans_default_domain ea.i18n.translationDomain %}
 
 {% block body_id 'ea-new-' ~ entity.name %}
@@ -61,34 +61,51 @@
 				<div class="card">
 					<div class="card-body">
 						{% block new_form %}
-							{{ form(new_form) }}{% endblock new_form %}
-						</div>
+							{{ form_start(new_form, {attr: {class: 'form form-vertical'}}) }}
+							{# <form class="form form-vertical"> #}
+							<div class="row">
+								<div class="col-12">
+									<div
+										class="mb-1">
+										{{form_label(new_form.libelle)}}
+										<div class="input-group input-group-merge">
+											<span class="input-group-text">
+												<i data-feather="user"></i>
+											</span>
+											{{form_widget(new_form.libelle, {attr: {placeholder: 'Libelle du composant'}})}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ form_end(new_form) }}
+						{% endblock %}
 					</div>
 				</div>
 			</div>
-		</section>
-	{% endblock %}
+		</div>
+	</section>
+{% endblock %}
 
 
-	{% block body_javascript %}
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/legacy.js') }}"></script>
-		<script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.min.js') }}"></script>
-		<script src="{{ asset('app-assets/js/scripts/forms/form-select2.min.js') }}"></script>
-	{% endblock %}
+{% block body_javascript %}
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/legacy.js') }}"></script>
+	<script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.min.js') }}"></script>
+	{# <script src="{{ asset('app-assets/js/scripts/forms/form-select2.min.js') }}"></script> #}
+{% endblock %}
 
-	{% block head_stylesheets %}
-		<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-pickadate.min.css')}}">
-		<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.min.css')}}">
-		<style>
-			#ea-lightbox-Suspect_photoFile {
-				display: none;
-			}
-			.ea-lightbox-thumbnail img {
-				width: 250px;
-				height: 250px;
-			}
-		</style>
-	{% endblock %}
+{% block head_stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-pickadate.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.min.css')}}">
+	<style>
+		#ea-lightbox-Suspect_photoFile {
+			display: none;
+		}
+		.ea-lightbox-thumbnail img {
+			width: 250px;
+			height: 250px;
+		}
+	</style>
+{% endblock %}

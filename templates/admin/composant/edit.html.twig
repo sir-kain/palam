@@ -10,7 +10,8 @@
 
 {% set ea_field_assets = ea.crud.fieldAssets(constant('EasyCorp\\Bundle\\EasyAdminBundle\\Config\\Crud::PAGE_EDIT')) %}
 
-	{% block head_javascript %}{{ parent() }}<script src="{{ asset('form.js', ea.assets.defaultAssetPackageName) }}"> </script>
+	{% block head_javascript %}
+	{{ parent() }}<script src="{{ asset('bundles/easyadmin/form.js') }}"> </script>
 {% endblock head_javascript %}
 
 {% block configured_head_contents %}
@@ -39,15 +40,6 @@
 	{{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
 {% endblock %}
 
-{% block content_title %}
-	{%- apply spaceless -%}
-	{% set custom_page_title = ea.crud.customPageTitle(pageName, entity ? entity.instance : null, ea.i18n.translationParameters) %}
-	{{ custom_page_title is null
-            ? ea.crud.defaultPageTitle(null, null, ea.i18n.translationParameters)|trans|raw
-            : custom_page_title|trans|raw }}
-	{%- endapply -%}
-{% endblock %}
-
 {% block page_actions %}
 	{% for action in entity.actions %}
 		{{ include(action.templatePath, { action: action }, with_context = false) }}
@@ -55,44 +47,40 @@
 {% endblock %}
 
 {% block main %}
+	<!-- Basic Vertical form layout section start -->
 	<section id="basic-vertical-layouts">
 		<div class="row">
 			<div class="col-md-6 col-12">
 				<div class="card">
 					<div class="card-body">
 						{% block edit_form %}
-							{{ form(edit_form) }}{% endblock edit_form %}
-						</div>
+							{{ form_start(edit_form, {attr: {class: 'form form-vertical'}}) }}
+							<div class="row">
+								<div class="col-12">
+									<div
+										class="mb-1">
+										{{form_label(edit_form.libelle)}}
+										<div class="input-group input-group-merge">
+											<span class="input-group-text">
+												<i data-feather="user"></i>
+											</span>
+											{{form_widget(edit_form.libelle)}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ form_end(edit_form) }}
+						{% endblock %}
 					</div>
 				</div>
 			</div>
-		</section>
-
-		{% block delete_form %}
-			{{ include('@EasyAdmin/crud/includes/_delete_form.html.twig', { entity_id: entity.primaryKeyValue }, with_context = false) }}
-		{% endblock delete_form %}
-	{% endblock %}
+		</div>
+	</section>
+	<!-- Basic Vertical form layout section end -->
 
 
-	{% block body_javascript %}
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
-		<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/legacy.js') }}"></script>
-		<script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.min.js') }}"></script>
-		<script src="{{ asset('app-assets/js/scripts/forms/form-select2.min.js') }}"></script>
-	{% endblock %}
+	{% block delete_form %}
+		{{ include('@EasyAdmin/crud/includes/_delete_form.html.twig', { entity_id: entity.primaryKeyValue }, with_context = false) }}
+	{% endblock delete_form %}
+{% endblock %}
 
-	{% block head_stylesheets %}
-		<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-pickadate.min.css')}}">
-		<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.min.css')}}">
-		<style>
-			#ea-lightbox-Suspect_photoFile {
-				display: none;
-			}
-			.ea-lightbox-thumbnail img {
-				width: 250px;
-				height: 250px;
-			}
-		</style>
-	{% endblock %}

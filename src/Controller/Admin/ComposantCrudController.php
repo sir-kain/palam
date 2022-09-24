@@ -6,6 +6,7 @@ use App\Entity\Composant;
 use App\Repository\ComposantRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -29,6 +30,16 @@ class ComposantCrudController extends AbstractCrudController
             IntegerField::new('niveau_achevement', '% achevement')->hideOnForm(),
         ];
     }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->overrideTemplates([
+                'crud/edit' => 'admin/composant/edit.html.twig',
+                'crud/new' => 'admin/composant/new.html.twig',
+            ]);
+    }
+
 
     public function configureActions(Actions $actions): Actions
     {
