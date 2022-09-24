@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -37,6 +38,16 @@ class IndicateurCrudController extends AbstractCrudController
             TextEditorField::new('analyse_interpretation', 'Analyse et interprétation des données'),
         ];
     }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->overrideTemplates([
+                'crud/edit' => 'admin/indicateur/edit.html.twig',
+                'crud/new' => 'admin/indicateur/new.html.twig',
+            ]);
+    }
+
 
     public function configureActions(Actions $actions): Actions
     {

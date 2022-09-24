@@ -1,0 +1,138 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends ea.templatePath('layout') %}
+{% form_theme new_form with ea.crud.formThemes only %}
+
+{% trans_default_domain ea.i18n.translationDomain %}
+
+{% block body_id 'ea-new-' ~ entity.name %}
+{% block body_class 'ea-new ea-new-' ~ entity.name %}
+
+{% set ea_field_assets = ea.crud.fieldAssets(constant('EasyCorp\\Bundle\\EasyAdminBundle\\Config\\Crud::PAGE_NEW')) %}{% block head_javascript %}
+	{# {{ parent() }} #}
+	{# <script src="{{ asset('bundles/easyadmin/form.js') }}"> </script> #}
+{% endblock head_javascript %}
+
+{% block configured_head_contents %}
+	{{ parent() }}
+	{% for htmlContent in ea_field_assets.headContents %}
+		{{ htmlContent|raw }}
+	{% endfor %}
+{% endblock %}
+
+{% block configured_body_contents %}
+	{{ parent() }}
+	{% for htmlContent in ea_field_assets.bodyContents %}
+		{{ htmlContent|raw }}
+	{% endfor %}
+{% endblock %}
+
+{% block configured_stylesheets %}
+	{{ parent() }}
+	{{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea_field_assets.cssAssets }, with_context = false) }}
+	{{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+
+{% block configured_javascripts %}
+	{{ parent() }}
+	{{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea_field_assets.jsAssets }, with_context = false) }}
+	{{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
+{% endblock %}
+
+{% block page_actions %}
+	{% for action in entity.actions %}
+		{{ include(action.templatePath, { action: action }, with_context = false) }}
+	{% endfor %}
+{% endblock %}
+
+{% block main %}
+	<section id="basic-vertical-layouts">
+		<div class="row">
+			<div class="col-md-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						{% block new_form %}
+							{{ form_start(new_form, {attr: {class: 'form form-vertical'}}) }}
+							<div class="row">
+								<div class="col-12">
+									<div class="mb-1">
+										{{form_label(new_form.type_indicateur)}}
+										{{ form_widget(new_form.type_indicateur, {attr: {class: 'form-select form-select-lg'}}) }}
+										{{ form_errors(new_form.type_indicateur) }}
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="mb-1">
+										{{form_label(new_form.code)}}
+										<div class="input-group input-group-merge">
+											<span class="input-group-text">
+												<i data-feather="user"></i>
+											</span>
+											{{form_widget(new_form.code, {attr: {placeholder: 'Code indicateur'}})}}
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="mb-1">
+										{{form_label(new_form.libelle)}}
+										<div class="input-group input-group-merge">
+											<span class="input-group-text">
+												<i data-feather="user"></i>
+											</span>
+											{{form_widget(new_form.libelle, {attr: {placeholder: 'Libelle indicateur'}})}}
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="mb-1">
+										{{form_label(new_form.periodicite)}}
+										{{ form_widget(new_form.periodicite, {attr: {class: 'form-select form-select-lg'}}) }}
+										{{ form_errors(new_form.periodicite) }}
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="mb-1">
+										{{form_label(new_form.source)}}
+										<div class="input-group input-group-merge">
+											<span class="input-group-text">
+												<i data-feather="user"></i>
+											</span>
+											{{form_widget(new_form.source, {attr: {placeholder: 'Source de données'}})}}
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="mb-1">
+										{{form_label(new_form.analyse_interpretation)}}
+										<div class="input-group input-group-merge">
+											{{form_widget(new_form.analyse_interpretation, {attr: {placeholder: 'Analyse'}})}}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ form_end(new_form) }}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block body_javascript %}
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/legacy.js') }}"></script>
+	<script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.min.js') }}"></script>
+	{# <script src="{{ asset('app-assets/js/scripts/forms/form-select2.min.js') }}"></script> #}
+{% endblock %}
+
+{% block head_stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-pickadate.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.min.css')}}">
+{% endblock %}
+
+{% block content_title %}
+	Enregistrement d'une nouvelle mise en cause
+{% endblock %}
