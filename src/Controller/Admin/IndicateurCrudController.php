@@ -31,6 +31,7 @@ class IndicateurCrudController extends AbstractCrudController
     {
         return [
             AssociationField::new('type_indicateur', 'Type indicateur'),
+            AssociationField::new('responsable', 'Responsable'),
             TextField::new('code', 'Numéro'),
             TextField::new('libelle', 'Indicateurs'),
             AssociationField::new('periodicite', 'Periodicité de collecte des données'),

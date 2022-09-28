@@ -30,9 +30,13 @@ class Responsable
     #[ORM\OneToMany(mappedBy: 'responsable', targetEntity: Activite::class)]
     private Collection $activites;
 
+    #[ORM\OneToMany(mappedBy: 'responsable', targetEntity: Indicateur::class)]
+    private Collection $indicateurs;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
+        $this->indicateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,5 +124,35 @@ class Responsable
 
     public function __toString(): string {
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection<int, Indicateur>
+     */
+    public function getIndicateurs(): Collection
+    {
+        return $this->indicateurs;
+    }
+
+    public function addIndicateur(Indicateur $indicateur): self
+    {
+        if (!$this->indicateurs->contains($indicateur)) {
+            $this->indicateurs->add($indicateur);
+            $indicateur->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIndicateur(Indicateur $indicateur): self
+    {
+        if ($this->indicateurs->removeElement($indicateur)) {
+            // set the owning side to null (unless already changed)
+            if ($indicateur->getResponsable() === $this) {
+                $indicateur->setResponsable(null);
+            }
+        }
+
+        return $this;
     }
 }

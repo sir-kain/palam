@@ -34,6 +34,9 @@ class Indicateur
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $analyse_interpretation = null;
 
+    #[ORM\ManyToOne(inversedBy: 'indicateurs')]
+    private ?Responsable $responsable = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class Indicateur
     public function setAnalyseInterpretation(string $analyse_interpretation): self
     {
         $this->analyse_interpretation = $analyse_interpretation;
+
+        return $this;
+    }
+
+    public function getResponsable(): ?Responsable
+    {
+        return $this->responsable;
+    }
+
+    public function setResponsable(?Responsable $responsable): self
+    {
+        $this->responsable = $responsable;
 
         return $this;
     }
