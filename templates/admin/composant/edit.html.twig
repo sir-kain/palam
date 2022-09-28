@@ -10,8 +10,7 @@
 
 {% set ea_field_assets = ea.crud.fieldAssets(constant('EasyCorp\\Bundle\\EasyAdminBundle\\Config\\Crud::PAGE_EDIT')) %}
 
-	{% block head_javascript %}
-	{{ parent() }}<script src="{{ asset('bundles/easyadmin/form.js') }}"> </script>
+	{% block head_javascript %}{{ parent() }}<script src="{{ asset('bundles/easyadmin/form.js') }}"> </script>
 {% endblock head_javascript %}
 
 {% block configured_head_contents %}
@@ -54,12 +53,12 @@
 				<div class="card">
 					<div class="card-body">
 						{% block edit_form %}
-							{{ form_start(edit_form, {attr: {class: 'form form-vertical'}}) }}
+							{{ form_start(edit_form, {attr: {class: 'form form-vertical', novalidate: true}}) }}
 							<div class="row">
 								<div class="col-12">
-									<div
-										class="mb-1">
+									<div class="mb-1">
 										{{form_label(edit_form.libelle)}}
+										{{form_errors(edit_form.libelle)}}
 										<div class="input-group input-group-merge">
 											<span class="input-group-text">
 												<i data-feather="user"></i>
@@ -84,3 +83,31 @@
 	{% endblock delete_form %}
 {% endblock %}
 
+
+{% block body_javascript %}
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.time.js') }}"></script>
+	<script src="{{ asset('app-assets/vendors/js/pickers/pickadate/legacy.js') }}"></script>
+	<script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.min.js') }}"></script>
+	<script src="{{ asset('app-assets/js/scripts/forms/form-validation.js') }}"></script>
+
+{% endblock %}
+
+{% block head_stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-pickadate.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/pickers/form-flat-pickr.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/form-validation.css')}}">
+	<style>
+		#ea-lightbox-Suspect_photoFile {
+			display: none;
+		}
+		.ea-lightbox-thumbnail img {
+			width: 250px;
+			height: 250px;
+		}
+		.span-required {
+			color: #EA5455;
+		}
+	</style>
+{% endblock %}
