@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\Activite;
+use App\Entity\User;
 use App\Repository\ActiviteRepository;
 use App\Repository\ComposantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +11,9 @@ use Doctrine\Persistence\ObjectManager;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Security;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
@@ -19,17 +22,31 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         private Security $security,
         private ActiviteRepository $activiteRepository,
         private ComposantRepository $composantRepository,
-        private EntityManagerInterface $manager
+        private EntityManagerInterface $manager,
+        private UserPasswordHasherInterface $hasher
     ) {
     }
 
     public static function getSubscribedEvents()
     {
         return [
+            BeforeEntityPersistedEvent::class => ['createUserEvent'],
             AfterEntityPersistedEvent::class => ['createActiviteEvent'],
             AfterEntityUpdatedEvent::class => ['updateActiviteEvent'],
             AfterEntityDeletedEvent::class => ['deleteActiviteEvent'],
         ];
+    }
+
+    public function createUserEvent(BeforeEntityPersistedEvent $event)
+    {
+        $entity = $event->getEntityInstance();
+        if (!($entity instanceof User)) {
+            return;
+        }
+
+        $password = $this->hasher->hashPassword($entity, 'passer');
+        $entity->setPassword($password);
+        $this->manager->persist($entity);
     }
 
     public function createActiviteEvent(AfterEntityPersistedEvent $event)
