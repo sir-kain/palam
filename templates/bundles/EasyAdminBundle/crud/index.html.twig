@@ -336,9 +336,6 @@
 	<script src="{{ asset('app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
 	<script src="{{ asset('app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js') }}"></script>
-	<!-- BEGIN: Page JS-->
-	{# <script src="{{ asset('app-assets/js/scripts/tables/table-datatables-basic.min.js') }}"></script> #}
-	<!-- END: Page JS-->
 
 {% endblock body_javascript %}
 
@@ -350,6 +347,9 @@
 	<style>
 		.field-association a {
 			color: #B4B7BD;
+		}
+		.filter-content .ts-wrapper {
+			display: none;
 		}
 	</style>
 {% endblock %}
