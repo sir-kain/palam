@@ -33,10 +33,14 @@ class Responsable
     #[ORM\OneToMany(mappedBy: 'responsable', targetEntity: Indicateur::class)]
     private Collection $indicateurs;
 
+    #[ORM\OneToMany(mappedBy: 'responsable', targetEntity: User::class)]
+    private Collection $users;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
         $this->indicateurs = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +154,36 @@ class Responsable
             // set the owning side to null (unless already changed)
             if ($indicateur->getResponsable() === $this) {
                 $indicateur->setResponsable(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setResponsable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getResponsable() === $this) {
+                $user->setResponsable(null);
             }
         }
 

@@ -11,6 +11,7 @@ use App\Entity\Periodicite;
 use App\Entity\Region;
 use App\Entity\Responsable;
 use App\Entity\TypeIndicateur;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -64,6 +65,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Indicateurs', 'shopping-cart', Indicateur::class),
 
             MenuItem::subMenu('Administration', 'map')->setSubItems([
+                MenuItem::linkToCrud('Utilisateurs', 'user', User::class),
                 MenuItem::linkToCrud('Type indicateurs', 'book', TypeIndicateur::class),
                 MenuItem::linkToCrud('Responsables', 'user', Responsable::class),
                 MenuItem::linkToCrud('Periodicités', 'package', Periodicite::class),
