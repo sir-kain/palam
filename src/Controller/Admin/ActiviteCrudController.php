@@ -39,6 +39,7 @@ class ActiviteCrudController extends AbstractCrudController
     {
         return [
             AssociationField::new('parent_id', 'Activité parente'),
+            TextField::new('code', 'Code activité'),
             TextField::new('libelle', 'Activités'),
             TextField::new('days', 'Durée')->onlyOnIndex(),
             DateField::new('date_debut', 'Date debut'),

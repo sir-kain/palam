@@ -78,6 +78,18 @@
 								<div class="col-12">
 									<div
 										class="mb-1">
+										{{form_label(new_form.code)}}
+										<div class="input-group input-group-merge">
+											<span class="input-group-text">
+												<i data-feather="user"></i>
+											</span>
+											{{form_widget(new_form.code, {attr: {placeholder: 'Code de l\'activité'}})}}
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div
+										class="mb-1">
 										{{form_label(new_form.libelle)}}
 										<div class="input-group input-group-merge">
 											<span class="input-group-text">
