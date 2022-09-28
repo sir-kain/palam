@@ -37,6 +37,10 @@ class Indicateur
     #[ORM\ManyToOne(inversedBy: 'indicateurs')]
     private ?Responsable $responsable = null;
 
+    #[ORM\ManyToOne(inversedBy: 'indicateurs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Composant $composant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +126,18 @@ class Indicateur
     public function setResponsable(?Responsable $responsable): self
     {
         $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    public function getComposant(): ?Composant
+    {
+        return $this->composant;
+    }
+
+    public function setComposant(?Composant $composant): self
+    {
+        $this->composant = $composant;
 
         return $this;
     }

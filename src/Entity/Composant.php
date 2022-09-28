@@ -35,9 +35,13 @@ class Composant
     #[ORM\Column(nullable: true)]
     private ?int $niveau_achevement = null;
 
+    #[ORM\OneToMany(mappedBy: 'composant', targetEntity: Indicateur::class)]
+    private Collection $indicateurs;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
+        $this->indicateurs = new ArrayCollection();
     }
 
     public function __toString()
@@ -133,6 +137,36 @@ class Composant
     public function setNiveauAchevement(?int $niveau_achevement): self
     {
         $this->niveau_achevement = $niveau_achevement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Indicateur>
+     */
+    public function getIndicateurs(): Collection
+    {
+        return $this->indicateurs;
+    }
+
+    public function addIndicateur(Indicateur $indicateur): self
+    {
+        if (!$this->indicateurs->contains($indicateur)) {
+            $this->indicateurs->add($indicateur);
+            $indicateur->setComposant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIndicateur(Indicateur $indicateur): self
+    {
+        if ($this->indicateurs->removeElement($indicateur)) {
+            // set the owning side to null (unless already changed)
+            if ($indicateur->getComposant() === $this) {
+                $indicateur->setComposant(null);
+            }
+        }
 
         return $this;
     }
