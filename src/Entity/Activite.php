@@ -44,6 +44,9 @@ class Activite
     #[ORM\JoinColumn(nullable: false)]
     private ?Composant $composant = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
@@ -178,6 +181,18 @@ class Activite
     public function setComposant(?Composant $composant): self
     {
         $this->composant = $composant;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }
