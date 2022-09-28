@@ -62,7 +62,9 @@ class IndicateurCrudController extends AbstractCrudController
         $exportCSV = Action::new("exportCSV", 'Export excel')
             ->setIcon('fas fa-download')
             ->linkToCrudAction('downloadCSV');
-        return $actions->addBatchAction($exportCSV);
+        return $actions
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
+            ->addBatchAction($exportCSV);
     }
 
     public function downloadCSV(BatchActionDto $batchActionDto)

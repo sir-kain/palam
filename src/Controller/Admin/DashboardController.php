@@ -72,7 +72,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Regions', 'map', Region::class),
                 MenuItem::linkToCrud('Departements', 'map', Departement::class),
                 MenuItem::linkToCrud('Communes', 'list', Commune::class),
-            ]),
+            ])->setPermission('ROLE_ADMIN'),
         ];
     }
 }
