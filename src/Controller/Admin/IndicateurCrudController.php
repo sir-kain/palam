@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -26,6 +27,11 @@ class IndicateurCrudController extends AbstractCrudController
         return Indicateur::class;
     }
 
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('composant');
+    }
 
     public function configureFields(string $pageName): iterable
     {
