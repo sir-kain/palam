@@ -3,8 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Activite;
+use App\Entity\User;
 use App\Repository\ActiviteRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -20,7 +20,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ActiviteCrudController extends AbstractCrudController
@@ -101,7 +100,18 @@ class ActiviteCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
+        $connectedUser = $this->getUser();
+        assert($connectedUser instanceof User);
+
         $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        return $queryBuilder->orderBy('entity.parent_id');
+
+        if (in_array('ROLE_ADMIN', $connectedUser->getRoles())) {
+            return $queryBuilder->orderBy('entity.parent_id');
+        }
+
+        return $queryBuilder
+            ->where('entity.responsable = :currentUserResponsable')
+            ->orderBy('entity.parent_id')
+            ->setParameter('currentUserResponsable', $connectedUser->getResponsable());
     }
 }

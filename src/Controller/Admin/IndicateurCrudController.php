@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Indicateur;
+use App\Entity\User;
 use App\Repository\IndicateurRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\QueryBuilder as ORMQueryBuilder;
@@ -103,8 +104,19 @@ class IndicateurCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): ORMQueryBuilder
     {
+        $connectedUser = $this->getUser();
+        assert($connectedUser instanceof User);
+
         $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        return $queryBuilder->orderBy('entity.type_indicateur');
+
+        if (in_array('ROLE_ADMIN', $connectedUser->getRoles())) {
+            return $queryBuilder->orderBy('entity.type_indicateur');
+        }
+
+        return $queryBuilder
+            ->where('entity.responsable = :currentUserResponsable')
+            ->orderBy('entity.type_indicateur')
+            ->setParameter('currentUserResponsable', $connectedUser->getResponsable());
     }
 
     // Filter the excel data 
